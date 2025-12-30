@@ -16,10 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path 
-from jobs.views import index
+
+import jobs.views
 
 urlpatterns = [
     path('admin/', admin.site.urls), 
-    path('', index, name='home'),
+    path('', jobs.views.home), 
+    path("jobs/", jobs.views.jobs_list), 
+    path("jobs/<int:jobs_id>/", jobs.views.jobs_detail),
     
 ]
