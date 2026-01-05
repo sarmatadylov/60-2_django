@@ -1,39 +1,41 @@
 {% extends "base.html" %}
 
 {% block content %}
+
+<h3>Добавить фриланс-проект</h3>
+
+<form method="post" enctype="multipart/form-data" class="mb-4">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-success">Добавить</button>
+</form>
+
+<hr>
+
 <h2 class="mb-4 text-center">Фриланс-проекты</h2>
 
 <div class="row row-cols-1 row-cols-md-3 g-4">
-    {% for job in jobs %}
+    {% for jobs in jobs %}
     <div class="col">
         <div class="card h-100 shadow-sm border-0">
-            <!-- Плейсхолдер изображения -->
-            <img src="https://via.placeholder.com/400x200?text=Проект" class="card-img-top" alt="Проект">
+            {% if jobs.photo %}
+                <img src="{{ jobs.photo.url }}" class="card-img-top" alt="{{ jobs.name }}">
+            {% else %}
+                <img src="/static/null_image2.png" class="card-img-top" alt="Проект">
+            {% endif %}
 
             <div class="card-body d-flex flex-column">
-                <h5 class="card-title fw-bold">{{ job.name }}</h5>
+                <h5 class="card-title fw-bold">{{ jobs.name }}</h5>
 
-                <!-- Бейдж удалёнки -->
-                <span class="badge {% if job.is_remote %}bg-success{% else %}bg-secondary{% endif %} mb-2">
-                    {% if job.is_remote %}Удалённая{% else %}Удаленно{% endif %}
-                </span>
-
-                <!-- Описание -->
+                {% if jobs.description %}
                 <p class="card-text text-truncate" style="max-height: 4.5em; overflow: hidden;">
-                    {{ job.description }}
+                    {{ jobs.description }}
                 </p>
+                {% endif %}
 
                 <div class="mt-auto">
-                    {% if job.budget %}
-                    <p class="card-text mb-1"><strong>Бюджет:</strong> {{ job.budget }} $</p>
-                    {% endif %}
-                    {% if job.deadline %}
-                    <p class="card-text mb-2"><strong>Срок:</strong> {{ job.deadline }}</p>
-                    {% endif %}
-
-                    <a href="/jobs/{{ job.id }}/" class="btn btn-primary w-100">
-                        Откликнуться
-                    </a>
+                    <p class="card-text mb-2"><strong>Цена:</strong> {{ jobs.price }} </p>
+                    <a href="/jobs/{{ jobs.id }}/" class="btn btn-primary w-100">Откликнуться</a>
                 </div>
             </div>
         </div>
@@ -42,4 +44,5 @@
     <p class="text-center">Фриланс-проекты пока не добавлены.</p>
     {% endfor %}
 </div>
+
 {% endblock content %}

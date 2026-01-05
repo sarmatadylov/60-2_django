@@ -1,1 +1,6 @@
-venv/
+venv/ 
+media 
+db.sqlite3 
+.qodo
+**/__pycache__/** 
+.env
