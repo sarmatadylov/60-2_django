@@ -25,6 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls), 
     path('', jobs.views.home), 
     path("jobs/", jobs.views.jobs_list), 
+    path("jobs/create/", jobs.views.jobs_create_view),
     path("jobs/<int:jobs_id>/", jobs.views.jobs_detail), 
 ]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
     
