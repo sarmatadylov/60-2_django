@@ -19,14 +19,23 @@ from django.urls import path
 from django.conf import settings 
 from django.conf.urls.static import static
 
-import jobs.views
+import jobs.views 
+from users.views import register_view, login_view, logout_view 
 
-urlpatterns = [
-    path('admin/', admin.site.urls), 
-    path('', jobs.views.home), 
-    path("jobs/", jobs.views.jobs_list), 
-    path("jobs/create/", jobs.views.jobs_create_view),
-    path("jobs/<int:jobs_id>/", jobs.views.jobs_detail), 
-]  + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
-    
+user_patterns = [
+    path("register/", register_view), 
+    path("login/", login_view),  
+    path("logout/", logout_view),
+]
 
+urlpatterns = (
+    user_patterns
+    + [
+        path("admin/", admin.site.urls),
+        path("", jobs.views.home),
+        path("jobs/", jobs.views.jobs_list),
+        path("jobs/<int:jobs_id>/", jobs.views.jobs_detail),
+        path("jobs/create/", jobs.views.jobs_create_view),
+    ]
+    + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+)

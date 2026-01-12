@@ -1,5 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import render 
+from django.contrib.auth.decorators import login_required
+
 
 from .form import JobsFrom
 from .models import Jobs 
@@ -31,17 +33,20 @@ def home(request):
        return render(request, "base.html")
 
 
+@login_required(login_url ="/login/")
 def jobs_list(request): 
     if request.method == "GET":
        jobs = Jobs.objects.all()
        return render(request, "jobs/jobs_list.html", context={"jobs": jobs})
 
 
+@login_required(login_url ="/login/")
 def jobs_detail(request, jobs_id): 
     if request.method == "GET":
        jobs = Jobs.objects.filter(id=jobs_id).first()
        return render(request, "jobs/jobs_detail.html", context={"jobs": jobs}) 
-    
+
+@login_required(login_url ="/login/")    
 def jobs_create_view(request): 
     if request.method == "GET":  
         form = JobsFrom()
