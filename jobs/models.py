@@ -14,7 +14,14 @@ class Category(models.Model):
     updated_at = models.DateTimeField(auto_now=True, null=True) 
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.name}"  
+
+class Tag(models.Model):
+    name = models.CharField(max_length=100) 
+
+
+    def __str__(self):
+        return f"{self.name}" 
 
 
 class Jobs(models.Model):
@@ -23,8 +30,11 @@ class Jobs(models.Model):
     description = models.TextField(null=True, blank=True)
     price = models.IntegerField(default=0)
     category  = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, blank=True)
+    tag = models.ManyToManyField(Tag)
     created_at = models.DateTimeField(auto_now_add=True, null=True)
-    updated_at = models.DateTimeField(auto_now=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True) 
+
 
     def __str__(self):
-        return f"{self.name}"
+        return f"{self.name}" 
+    

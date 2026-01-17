@@ -1,9 +1,9 @@
 from django.http import HttpResponse
 from django.shortcuts import render 
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
-
-from .form import JobsFrom
+from .form import JobsFrom, SearchForm
 from .models import Jobs 
 
 # Create your views here.  
@@ -30,14 +30,45 @@ insert into jobs (name, description, price) values ('name','description','price'
 
 def home(request): 
     if request.method == "GET":
-       return render(request, "base.html")
+       return render(request, "base.html") 
+    
+lsit = ["123", 12, "asd", True]
 
 
 @login_required(login_url ="/login/")
 def jobs_list(request): 
-    if request.method == "GET":
-       jobs = Jobs.objects.all()
-       return render(request, "jobs/jobs_list.html", context={"jobs": jobs})
+    jobs = Jobs.objects.all()
+    if request.method == "GET":  
+        limit = 3
+        forms = SearchForm()
+        search = request.GET.get("search")  
+        category = request.GET.get("category")  
+        tags = request.GET.getlist("tags") 
+        ordering = request.GET.get("ordering") 
+        page = request.GET.get("page") if request.GET.get("page") else 1
+        if category:
+            jobs = jobs.filter(category=category)
+        if search: 
+            jobs = jobs.filter( 
+                Q(name__icontains=search) | Q(description__icontains=search) 
+            ) 
+        if tags:
+            jobs = jobs.filter(tag__in=tags) 
+        
+        if ordering:
+            jobs = jobs.order_by(ordering)
+        max_page = range(jobs.count() // limit + 1)
+        jobs = jobs[limit * (int(page) - 1) : limit * int(page)]
+        return render(
+            request,
+            "jobs/jobs_list.html",
+            context={"jobs": jobs, "form": forms, "max_page": max_page[1:]},
+        )
+
+
+        
+
+      
 
 
 @login_required(login_url ="/login/")
