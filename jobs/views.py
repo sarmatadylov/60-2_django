@@ -1,10 +1,10 @@
 from django.http import HttpResponse
-from django.shortcuts import render 
+from django.shortcuts import redirect, render 
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 
-from .form import JobsFrom, SearchForm
-from .models import Jobs 
+from .form import CommentForm, JobsFrom, SearchForm
+from .models import Comment, Jobs 
 
 # Create your views here.  
 
@@ -95,6 +95,23 @@ def jobs_create_view(request):
         return HttpResponse("Jobs created")
 
         
-       
+@login_required(login_url="/login/")
+def jobs_update(request, jobs_id):
+    if request.method == "GET":
+        jobs = Jobs.objects.filter(id=jobs_id).first()
+        form = JobsFrom(initial=jobs.__dict__)
+        return render(request, "jobs/jobs_update.html", context={"form": form})
+    elif request.method == "PUT":
+        form = JobsFrom(request.PUT, request.FILES)
+        if form.is_valid():
+            jobs = Jobs.objects.filter(id=jobs_id).first()
+            if request.user == jobs.user:
+                jobs.name = form.cleaned_data["name"]
+                jobs.description = form.cleaned_data["description"]
+                jobs.price = form.cleaned_data["price"]
+                jobs.photo = form.cleaned_data["photo"]
+                jobs.save()
+
+        return redirect(f"/jobs/{jobs_id}/")       
 
 

@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="card" style="width: 35rem;">
+    {% if user.profile.photo %}
+    <img src="{{user.profile.photo.url}}" class="card-img-top" alt="...">
+    {% else %}
+    <img src="/static/null_image2.png" class="card-img-top" alt="...">
+    {% endif %}
+    <h1>Name: {{user.username}}</h1>
+    <h1>Email: {{user.email}}</h1>
+    <h1>Age: {{user.profile.age}}</h1>
+</div>
+<p></p>
+<p></p>
+<h1>продукты профиля:</h1>
+<p></p>
+<p></p>
+{% for jobs in jobs %}
+<div class="card" style="width: 18rem;">
+    {% if jobs.photo %}
+    <img src="{{jobs.photo.url}}" class="card-img-top" alt="...">
+    {% else %}
+    <img src="/static/null_image2.png" class="card-img-top" alt="...">
+    {% endif %}
+    <div class="card-body">
+        <h5 class="card-title">name: {{jobs.name}}</h5>
+        <h6 class="card-title">description: {{jobs.description}}</h6>
+        <p class="card-text">price: {{jobs.price}}</p>
+        <p>views: {{jobs.views}}</p>
+        <a href="/jobs/{{jobs.id}}/update/" class="btn btn-primary">Изменить</a>
+    </div>
+</div>
+{% endfor %}
+
+{% endblock content %}

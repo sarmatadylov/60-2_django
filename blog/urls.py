@@ -20,12 +20,13 @@ from django.conf import settings
 from django.conf.urls.static import static
 
 import jobs.views 
-from users.views import login_view, logout_view, register_view
+from users.views import login_view, logout_view, profile_view, register_view
 
 user_patterns = [
     path("register/", register_view), 
     path("login/", login_view),  
-    path("logout/", logout_view),
+    path("logout/", logout_view), 
+    path("profile/", profile_view),
 ]
 
 urlpatterns = (
@@ -35,7 +36,9 @@ urlpatterns = (
         path("", jobs.views.home),
         path("jobs/", jobs.views.jobs_list),
         path("jobs/<int:jobs_id>/", jobs.views.jobs_detail),
+        path("jobs/<int:jobs_id>/update/", jobs.views.jobs_update),
         path("jobs/create/", jobs.views.jobs_create_view),
+        
     ]
     + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 )

@@ -78,6 +78,14 @@
         {% endfor %}
     </ul>
 </nav>
-{% endif %}
+{% endif %} 
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        {% for i in max_page%}
+        <li class="page-item"><a class="page-link" href="/products/?page={{i}}">{{i}}</a></li>
+        {% endfor %}
+
+    </ul>
+</nav>
 
 {% endblock content %}

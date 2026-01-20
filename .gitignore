@@ -1,6 +1,11 @@
 venv/ 
 media 
-db.sqlite3 
+db.sqlite3
 .qodo
 **/__pycache__/** 
 .env
+static/ 
+.DS_Store 
+*.py[cod]
+*.pyi
+

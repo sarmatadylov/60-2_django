@@ -25,14 +25,16 @@ SECRET_KEY = 'django-insecure-7o%6=q#@#%v$122gbv8+n6z0q*w&8&cnloby$78mkfj9$&fx^q
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"]
+
 
 
 # Application definition
 
 INSTALLED_APPS = [
     'jobs', 
-    'users',
+    'users', 
+    'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -121,4 +123,9 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / "static"] 
 
 MEDIA_ROOT = BASE_DIR / "media" 
-MEDIA_URL = "/media/" 
+MEDIA_URL = "/media/"  
+
+JAZZMIN_UI_TWEAKS = {
+    "theme": "darkly",
+    # "dark_mode_theme": "darkly",
+}
